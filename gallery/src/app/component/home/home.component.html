@@ -1,0 +1,11 @@
+<div class="gallerize-example">
+
+  <h2>Another lightbox with custom gallery config</h2>
+  	<p class="container">
+		<img *ngFor="let item of items; index as i"
+          [lightbox]="i"
+          [gallery]="'anotherLightbox'"
+          [src]="item.data.thumb">
+	</p>
+
+</div>
