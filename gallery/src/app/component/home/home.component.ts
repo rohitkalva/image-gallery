@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Gallery, GalleryItem, ImageItem, ThumbnailsPosition, ImageSize } from '@ngx-gallery/core';
+import { HomeService } from './home.service';
 
 @Component({
   selector: 'app-home',
@@ -11,19 +12,54 @@ import { Gallery, GalleryItem, ImageItem, ThumbnailsPosition, ImageSize } from '
 export class HomeComponent implements OnInit {
 
   items: GalleryItem[];
+  folderList: any;
+  ImageData: any;
+  path: any;
 
-  constructor(public gallery: Gallery) {
+  constructor(public gallery: Gallery, private api: HomeService) {}
+
+  ngOnInit(): void {
+
+    this.folderListFunc();
+    this.ImageFilePath('default');
+
   }
 
-  ngOnInit() {
-    this.items = data.map(item =>
-      new ImageItem({ src: item.srcUrl, thumb: item.previewUrl })
-    );
-
-    this.GalleryConfig();
+   folderListFunc(): void {
+    // tslint:disable-next-line: deprecation
+    this.api.folderList().subscribe(res => {
+      this.folderList = res.folderPath;
+      console.log(this.folderList);
+      this.path = this.splitPath(this.folderList[0]);
+      console.log(this.path);
+    });
   }
 
-  GalleryConfig() {
+  ImageFilePath(folder): void {
+
+    // tslint:disable-next-line: deprecation
+    this.api.ImagesPath(folder).subscribe(res => {
+      this.ImageData = res.response;
+      this.items = this.ImageData.map(item =>
+        new ImageItem({ src: item.srcUrl, thumb: item.previewUrl })
+      );
+      this.GalleryConfig();
+
+    });
+  }
+
+  folderNavigate(folder): void {
+    const folderPath = this.splitPath(folder);
+    this.path = folderPath;
+    this.ImageFilePath(folderPath);
+  }
+
+  splitPath(path): void {
+    const temp = path.split('\\');
+    return temp[1];
+  }
+
+  GalleryConfig(): void {
 
     const lightboxGalleryRef = this.gallery.ref('anotherLightbox');
 
@@ -35,22 +71,3 @@ export class HomeComponent implements OnInit {
     lightboxGalleryRef.load(this.items);
   }
 }
-
-const data = [
-  {
-    srcUrl: 'https://preview.ibb.co/jrsA6R/img12.jpg',
-    previewUrl: 'https://preview.ibb.co/jrsA6R/img12.jpg'
-  },
-  {
-    srcUrl: 'https://preview.ibb.co/kPE1D6/clouds.jpg',
-    previewUrl: 'https://preview.ibb.co/kPE1D6/clouds.jpg'
-  },
-  {
-    srcUrl: 'https://preview.ibb.co/mwsA6R/img7.jpg',
-    previewUrl: 'https://preview.ibb.co/mwsA6R/img7.jpg'
-  },
-  {
-    srcUrl: 'https://preview.ibb.co/kZGsLm/img8.jpg',
-    previewUrl: 'https://preview.ibb.co/kZGsLm/img8.jpg'
-  }
-];

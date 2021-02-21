@@ -11,6 +11,8 @@ import { LightboxModule } from '@ngx-gallery/lightbox';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './component/home/home.component';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatListModule} from '@angular/material/list';
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import { HomeComponent } from './component/home/home.component';
     ]),
     BrowserAnimationsModule,
     GalleryModule,
-    LightboxModule
+    LightboxModule,
+    MatListModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

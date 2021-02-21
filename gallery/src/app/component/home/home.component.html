@@ -1,3 +1,14 @@
+<mat-toolbar color="primary">
+	Image-Gallery
+  <span style="flex: 1"></span>
+
+<p>Folder: </p>
+  <button mat-button [matMenuTriggerFor]="menu">{{path}}</button>
+  <mat-menu #menu="matMenu" >
+    <button mat-menu-item *ngFor="let folder of folderList" (click)="folderNavigate(folder)">{{folder}}</button>
+  </mat-menu>
+</mat-toolbar>
+
 <div class="gallerize-example">
 
   <h2>Another lightbox with custom gallery config</h2>
