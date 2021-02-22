@@ -1,10 +1,19 @@
 <mat-toolbar color="primary">
-	Image-Gallery
+  Image-Gallery
   <span style="flex: 1"></span>
 
-<p>Folder: </p>
+  <div class="image-upload">
+    <label for="file-input">
+      <mat-icon aria-label="Click here to upload image">cloud_upload</mat-icon>
+    </label>
+
+    <input #imageInput id="file-input" type="file" accept="image/*" (change)="ImageUpload(imageInput)">
+  </div>
+  &nbsp; &nbsp;
+
+  <mat-icon>folder</mat-icon>
   <button mat-button [matMenuTriggerFor]="menu">{{path}}</button>
-  <mat-menu #menu="matMenu" >
+  <mat-menu #menu="matMenu">
     <button mat-menu-item *ngFor="let folder of folderList" (click)="folderNavigate(folder)">{{folder}}</button>
   </mat-menu>
 </mat-toolbar>
@@ -12,11 +21,8 @@
 <div class="gallerize-example">
 
   <h2>Another lightbox with custom gallery config</h2>
-  	<p class="container">
-		<img *ngFor="let item of items; index as i"
-          [lightbox]="i"
-          [gallery]="'anotherLightbox'"
-          [src]="item.data.thumb">
-	</p>
+  <p class="container">
+    <img *ngFor="let item of items; index as i" [lightbox]="i" [gallery]="'anotherLightbox'" [src]="item.data.thumb">
+  </p>
 
 </div>

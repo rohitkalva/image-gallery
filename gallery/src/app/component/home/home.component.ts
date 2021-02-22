@@ -1,6 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Gallery, GalleryItem, ImageItem, ThumbnailsPosition, ImageSize } from '@ngx-gallery/core';
 import { HomeService } from './home.service';
+import { ToastrService } from 'ngx-toastr';
+
+class ImageSnippet {
+  constructor(public src: string, public file: File) {}
+}
 
 @Component({
   selector: 'app-home',
@@ -15,8 +20,10 @@ export class HomeComponent implements OnInit {
   folderList: any;
   ImageData: any;
   path: any;
+  selectedFile: ImageSnippet;
 
-  constructor(public gallery: Gallery, private api: HomeService) {}
+
+  constructor(public gallery: Gallery, private api: HomeService, private toastr: ToastrService) {}
 
   ngOnInit(): void {
 
@@ -46,6 +53,30 @@ export class HomeComponent implements OnInit {
       this.GalleryConfig();
 
     });
+  }
+
+  ImageUpload(imageInput: any): void {
+    const file: File = imageInput.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', (event: any) => {
+      this.selectedFile = new ImageSnippet(event.target.result, file);
+      // tslint:disable-next-line: deprecation
+      this.api.uploadImage(this.selectedFile.file, this.path).subscribe(
+        (res) => {
+          if (res.response === 'Upload success'){
+            this.ImageFilePath(this.path);
+            this.toastr.success('File uploaded successfully!', 'Success');
+          }
+        },
+        (err) => {
+          if (err){
+          this.toastr.error('Error in uploading file!', 'Error');
+          }
+        });
+    });
+
+    reader.readAsDataURL(file);
   }
 
   folderNavigate(folder): void {

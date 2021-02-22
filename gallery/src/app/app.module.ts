@@ -13,6 +13,9 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './component/home/home.component';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatListModule} from '@angular/material/list';
+import {MatIconModule} from '@angular/material/icon';
+import { ToastrModule } from 'ngx-toastr';
+
 
 
 @NgModule({
@@ -32,7 +35,9 @@ import {MatListModule} from '@angular/material/list';
     GalleryModule,
     LightboxModule,
     MatListModule,
-    MatMenuModule
+    MatMenuModule,
+    MatIconModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
